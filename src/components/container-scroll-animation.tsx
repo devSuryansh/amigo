@@ -85,7 +85,7 @@ export const Card = ({
     >
       <div className="bg-gray-100 h-full w-full rounded-2xl  gap-4 overflow-hidden p-4 transition-all ">
         <Image
-          src="/temp-banner.png"
+          src="https://cdn.dribbble.com/userupload/16375114/file/original-45970180a1fcc58ba087cca0f0640459.jpg"
           fill
           alt="bannerImage"
           className="object-cover border-8 rounded-2xl"
