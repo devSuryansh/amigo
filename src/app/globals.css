@@ -9,7 +9,6 @@
 *::-webkit-scrollbar {
   display: none !important;
 }
-
 .bg-radial-gradient {
   background-image: radial-gradient(
     circle at 10% 20%,
@@ -39,24 +38,7 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-    --chart-1: 0 84.2% 60.2%;
-    --chart-2: 180 60% 45%;
-    --chart-3: 240 50% 50%;
-    --chart-4: 120 70% 40%;
-    --chart-5: 60 80% 50%;
-    --sidebar: 0 0% 100%;
-    --sidebar-foreground: 0 0% 3.9%;
-    --sidebar-primary: 0 0% 9%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 0 0% 96.1%;
-    --sidebar-accent-foreground: 0 0% 9%;
-    --sidebar-border: 0 0% 89.8%;
-    --sidebar-ring: 0 0% 3.9%;
     --radius: 0.5rem;
-    --radius-sm: calc(var(--radius) - 4px);
-    --radius-md: calc(var(--radius) - 2px);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) + 4px);
   }
 
   .dark {
@@ -79,26 +61,5 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
-    --chart-1: 0 70% 50%;
-    --chart-2: 180 50% 30%;
-    --chart-3: 240 60% 40%;
-    --chart-4: 120 60% 35%;
-    --chart-5: 60 70% 45%;
-    --sidebar: 0 0% 3.9%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 0 0% 9%;
-    --sidebar-accent: 0 0% 14.9%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 14.9%;
-    --sidebar-ring: 0 0% 83.1%;
-  }
-
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-foreground;
   }
 }
