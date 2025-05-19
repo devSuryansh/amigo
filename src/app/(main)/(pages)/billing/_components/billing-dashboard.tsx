@@ -1,45 +1,45 @@
-'use client'
+"use client";
 
-import { useBilling } from '@/providers/billing-provider'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { SubscriptionCard } from './subscription-card'
-import CreditTracker from './creadits-tracker'
+import { useBilling } from "@/providers/billing-provider";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { SubscriptionCard } from "./subscription-card";
+import CreditTracker from "./creadits-tracker";
 
-type Props = {}
-
-const BillingDashboard = (props: Props) => {
-  const { credits, tier } = useBilling()
-  const [stripeProducts, setStripeProducts] = useState<any>([])
-  const [loading, setLoading] = useState<boolean>(false)
+const BillingDashboard = () => {
+  const { credits, tier } = useBilling();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [stripeProducts, setStripeProducts] = useState<any>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onStripeProducts = async () => {
-    setLoading(true)
-    const { data } = await axios.get('/api/payment')
+    setLoading(true);
+    const { data } = await axios.get("/api/payment");
     if (data) {
-      setStripeProducts(data)
-      setLoading(false)
+      setStripeProducts(data);
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    onStripeProducts()
-  }, [])
+    onStripeProducts();
+  }, []);
 
   const onPayment = async (id: string) => {
     const { data } = await axios.post(
-      '/api/payment',
+      "/api/payment",
       {
         priceId: id,
       },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
-    window.location.assign(data)
-  }
+    );
+    window.location.assign(data);
+  };
 
   return (
     <>
@@ -63,22 +63,19 @@ const BillingDashboard = (props: Props) => {
           </svg>
         </div>
       ) : ( */}
-        <>
-          <div className="flex gap-5 p-6">
-            <SubscriptionCard
-              onPayment={onPayment}
-              tier={tier}
-              products={stripeProducts}
-            />
-          </div>
-          <CreditTracker
+      <>
+        <div className="flex gap-5 p-6">
+          <SubscriptionCard
+            onPayment={onPayment}
             tier={tier}
-            credits={parseInt(credits)}
+            products={stripeProducts}
           />
-        </>
+        </div>
+        <CreditTracker tier={tier} credits={parseInt(credits)} />
+      </>
       {/* )} */}
     </>
-  )
-}
+  );
+};
 
-export default BillingDashboard
+export default BillingDashboard;

@@ -1,9 +1,10 @@
-'use server'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use server";
 
-import { Option } from '@/components/ui/multiple-selector'
-import { db } from '@/lib/db'
-import { currentUser } from '@clerk/nextjs'
-import axios from 'axios'
+import { Option } from "@/components/ui/multiple-selector";
+import { db } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs";
+import axios from "axios";
 
 export const onSlackConnect = async (
   app_id: string,
@@ -15,12 +16,12 @@ export const onSlackConnect = async (
   team_name: string,
   user_id: string
 ): Promise<void> => {
-  if (!slack_access_token) return
+  if (!slack_access_token) return;
 
   const slackConnection = await db.slack.findFirst({
     where: { slackAccessToken: slack_access_token },
     include: { connections: true },
-  })
+  });
 
   if (!slackConnection) {
     await db.slack.create({
@@ -34,50 +35,50 @@ export const onSlackConnect = async (
         teamId: team_id,
         teamName: team_name,
         connections: {
-          create: { userId: user_id, type: 'Slack' },
+          create: { userId: user_id, type: "Slack" },
         },
       },
-    })
+    });
   }
-}
+};
 
 export const getSlackConnection = async () => {
-  const user = await currentUser()
+  const user = await currentUser();
   if (user) {
     return await db.slack.findFirst({
       where: { userId: user.id },
-    })
+    });
   }
-  return null
-}
+  return null;
+};
 
 export async function listBotChannels(
   slackAccessToken: string
 ): Promise<Option[]> {
   const url = `https://slack.com/api/conversations.list?${new URLSearchParams({
-    types: 'public_channel,private_channel',
-    limit: '200',
-  })}`
+    types: "public_channel,private_channel",
+    limit: "200",
+  })}`;
 
   try {
     const { data } = await axios.get(url, {
       headers: { Authorization: `Bearer ${slackAccessToken}` },
-    })
+    });
 
-    console.log(data)
+    console.log(data);
 
-    if (!data.ok) throw new Error(data.error)
+    if (!data.ok) throw new Error(data.error);
 
-    if (!data?.channels?.length) return []
+    if (!data?.channels?.length) return [];
 
     return data.channels
       .filter((ch: any) => ch.is_member)
       .map((ch: any) => {
-        return { label: ch.name, value: ch.id }
-      })
+        return { label: ch.name, value: ch.id };
+      });
   } catch (error: any) {
-    console.error('Error listing bot channels:', error.message)
-    throw error
+    console.error("Error listing bot channels:", error.message);
+    throw error;
   }
 }
 
@@ -88,23 +89,23 @@ const postMessageInSlackChannel = async (
 ): Promise<void> => {
   try {
     await axios.post(
-      'https://slack.com/api/chat.postMessage',
+      "https://slack.com/api/chat.postMessage",
       { channel: slackChannel, text: content },
       {
         headers: {
           Authorization: `Bearer ${slackAccessToken}`,
-          'Content-Type': 'application/json;charset=utf-8',
+          "Content-Type": "application/json;charset=utf-8",
         },
       }
-    )
-    console.log(`Message posted successfully to channel ID: ${slackChannel}`)
+    );
+    console.log(`Message posted successfully to channel ID: ${slackChannel}`);
   } catch (error: any) {
     console.error(
       `Error posting message to Slack channel ${slackChannel}:`,
       error?.response?.data || error.message
-    )
+    );
   }
-}
+};
 
 // Wrapper function to post messages to multiple Slack channels
 export const postMessageToSlack = async (
@@ -112,18 +113,20 @@ export const postMessageToSlack = async (
   selectedSlackChannels: Option[],
   content: string
 ): Promise<{ message: string }> => {
-  if (!content) return { message: 'Content is empty' }
-  if (!selectedSlackChannels?.length) return { message: 'Channel not selected' }
+  if (!content) return { message: "Content is empty" };
+  if (!selectedSlackChannels?.length)
+    return { message: "Channel not selected" };
 
   try {
     selectedSlackChannels
       .map((channel) => channel?.value)
       .forEach((channel) => {
-        postMessageInSlackChannel(slackAccessToken, channel, content)
-      })
+        postMessageInSlackChannel(slackAccessToken, channel, content);
+      });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return { message: 'Message could not be sent to Slack' }
+    return { message: "Message could not be sent to Slack" };
   }
 
-  return { message: 'Success' }
-}
+  return { message: "Success" };
+};

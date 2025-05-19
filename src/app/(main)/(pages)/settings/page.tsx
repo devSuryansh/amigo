@@ -1,32 +1,30 @@
-import ProfileForm from '@/components/forms/profile-form'
-import React from 'react'
-import ProfilePicture from './_components/profile-picture'
-import { db } from '@/lib/db'
-import { currentUser } from '@clerk/nextjs'
+import ProfileForm from "@/components/forms/profile-form";
+import React from "react";
+import ProfilePicture from "./_components/profile-picture";
+import { db } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs";
 
-type Props = {}
+const Settings = async () => {
+  const authUser = await currentUser();
+  if (!authUser) return null;
 
-const Settings = async (props: Props) => {
-  const authUser = await currentUser()
-  if (!authUser) return null
-
-  const user = await db.user.findUnique({ where: { clerkId: authUser.id } })
+  const user = await db.user.findUnique({ where: { clerkId: authUser.id } });
   const removeProfileImage = async () => {
-    'use server'
+    "use server";
     const response = await db.user.update({
       where: {
         clerkId: authUser.id,
       },
       data: {
-        profileImage: '',
+        profileImage: "",
       },
-    })
-    return response
-  }
+    });
+    return response;
+  };
 
   const uploadProfileImage = async (image: string) => {
-    'use server'
-    const id = authUser.id
+    "use server";
+    const id = authUser.id;
     const response = await db.user.update({
       where: {
         clerkId: id,
@@ -34,13 +32,13 @@ const Settings = async (props: Props) => {
       data: {
         profileImage: image,
       },
-    })
+    });
 
-    return response
-  }
+    return response;
+  };
 
   const updateUserInfo = async (name: string) => {
-    'use server'
+    "use server";
 
     const updateUser = await db.user.update({
       where: {
@@ -49,9 +47,9 @@ const Settings = async (props: Props) => {
       data: {
         name,
       },
-    })
-    return updateUser
-  }
+    });
+    return updateUser;
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -67,16 +65,13 @@ const Settings = async (props: Props) => {
         </div>
         <ProfilePicture
           onDelete={removeProfileImage}
-          userImage={user?.profileImage || ''}
+          userImage={user?.profileImage || ""}
           onUpload={uploadProfileImage}
         />
-        <ProfileForm
-          user={user}
-          onUpdate={updateUserInfo}
-        />
+        <ProfileForm user={user} onUpdate={updateUserInfo} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;

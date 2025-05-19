@@ -1,22 +1,23 @@
-import { ConnectionTypes } from '@/lib/types'
-import React from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ConnectionTypes } from "@/lib/types";
+import React from "react";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import Image from 'next/image'
-import Link from 'next/link'
+} from "@/components/ui/card";
+import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
-  type: ConnectionTypes
-  icon: string
-  title: ConnectionTypes
-  description: string
-  callback?: () => void
-  connected: {} & any
-}
+  type: ConnectionTypes;
+  icon: string;
+  title: ConnectionTypes;
+  description: string;
+  callback?: () => void;
+  connected: {} & any;
+};
 
 const ConnectionCard = ({
   description,
@@ -50,13 +51,13 @@ const ConnectionCard = ({
         ) : (
           <Link
             href={
-              title == 'Discord'
+              title == "Discord"
                 ? process.env.NEXT_PUBLIC_DISCORD_REDIRECT!
-                : title == 'Notion'
+                : title == "Notion"
                 ? process.env.NEXT_PUBLIC_NOTION_AUTH_URL!
-                : title == 'Slack'
+                : title == "Slack"
                 ? process.env.NEXT_PUBLIC_SLACK_REDIRECT!
-                : '#'
+                : "#"
             }
             className=" rounded-lg bg-primary p-2 font-bold text-primary-foreground"
           >
@@ -65,7 +66,7 @@ const ConnectionCard = ({
         )}
       </div>
     </Card>
-  )
-}
+  );
+};
 
-export default ConnectionCard
+export default ConnectionCard;

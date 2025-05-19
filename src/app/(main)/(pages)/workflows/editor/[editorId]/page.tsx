@@ -1,11 +1,9 @@
-import { ConnectionsProvider } from '@/providers/connections-provider'
-import EditorProvider from '@/providers/editor-provider'
-import React from 'react'
-import EditorCanvas from './_components/editor-canvas'
+import { ConnectionsProvider } from "@/providers/connections-provider";
+import EditorProvider from "@/providers/editor-provider";
+import React from "react";
+import EditorCanvas from "./_components/editor-canvas";
 
-type Props = {}
-
-const Page = (props: Props) => {
+const Page = () => {
   return (
     <div className="h-full">
       <EditorProvider>
@@ -14,7 +12,7 @@ const Page = (props: Props) => {
         </ConnectionsProvider>
       </EditorProvider>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

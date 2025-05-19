@@ -1,15 +1,15 @@
-import { CONNECTIONS } from '@/lib/constant'
-import React from 'react'
-import ConnectionCard from './_components/connection-card'
-import { currentUser } from '@clerk/nextjs'
-import { onDiscordConnect } from './_actions/discord-connection'
-import { onNotionConnect } from './_actions/notion-connection'
-import { onSlackConnect } from './_actions/slack-connection'
-import { getUserData } from './_actions/get-user'
+import { CONNECTIONS } from "@/lib/constant";
+import React from "react";
+import ConnectionCard from "./_components/connection-card";
+import { currentUser } from "@clerk/nextjs";
+import { onDiscordConnect } from "./_actions/discord-connection";
+import { onNotionConnect } from "./_actions/notion-connection";
+import { onSlackConnect } from "./_actions/slack-connection";
+import { getUserData } from "./_actions/get-user";
 
 type Props = {
-  searchParams?: { [key: string]: string | undefined }
-}
+  searchParams?: { [key: string]: string | undefined };
+};
 
 const Connections = async (props: Props) => {
   const {
@@ -32,31 +32,31 @@ const Connections = async (props: Props) => {
     team_id,
     team_name,
   } = props.searchParams ?? {
-    webhook_id: '',
-    webhook_name: '',
-    webhook_url: '',
-    guild_id: '',
-    guild_name: '',
-    channel_id: '',
-    access_token: '',
-    workspace_name: '',
-    workspace_icon: '',
-    workspace_id: '',
-    database_id: '',
-    app_id: '',
-    authed_user_id: '',
-    authed_user_token: '',
-    slack_access_token: '',
-    bot_user_id: '',
-    team_id: '',
-    team_name: '',
-  }
+    webhook_id: "",
+    webhook_name: "",
+    webhook_url: "",
+    guild_id: "",
+    guild_name: "",
+    channel_id: "",
+    access_token: "",
+    workspace_name: "",
+    workspace_icon: "",
+    workspace_id: "",
+    database_id: "",
+    app_id: "",
+    authed_user_id: "",
+    authed_user_token: "",
+    slack_access_token: "",
+    bot_user_id: "",
+    team_id: "",
+    team_name: "",
+  };
 
-  const user = await currentUser()
-  if (!user) return null
+  const user = await currentUser();
+  if (!user) return null;
 
   const onUserConnections = async () => {
-    console.log(database_id)
+    console.log(database_id);
     await onDiscordConnect(
       channel_id!,
       webhook_id!,
@@ -65,7 +65,7 @@ const Connections = async (props: Props) => {
       user.id,
       guild_name!,
       guild_id!
-    )
+    );
     await onNotionConnect(
       access_token!,
       workspace_id!,
@@ -73,7 +73,7 @@ const Connections = async (props: Props) => {
       workspace_name!,
       database_id!,
       user.id
-    )
+    );
 
     await onSlackConnect(
       app_id!,
@@ -84,24 +84,25 @@ const Connections = async (props: Props) => {
       team_id!,
       team_name!,
       user.id
-    )
+    );
 
-    const connections: any = {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const connections: any = {};
 
-    const user_info = await getUserData(user.id)
+    const user_info = await getUserData(user.id);
 
     //get user info with all connections
-    user_info?.connections.map((connection) => {
-      connections[connection.type] = true
-      return (connections[connection.type] = true)
-    })
+    user_info?.connections.map((connection: { type: string | number }) => {
+      connections[connection.type] = true;
+      return (connections[connection.type] = true);
+    });
 
     // Google Drive connection will always be true
     // as it is given access during the login process
-    return { ...connections, 'Google Drive': true }
-  }
+    return { ...connections, "Google Drive": true };
+  };
 
-  const connections = await onUserConnections()
+  const connections = await onUserConnections();
 
   return (
     <div className="relative flex flex-col gap-4">
@@ -125,7 +126,7 @@ const Connections = async (props: Props) => {
         </section>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Connections
+export default Connections;
